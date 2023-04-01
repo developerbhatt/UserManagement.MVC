@@ -1,6 +1,541 @@
 ﻿<environment include="Development">
     <script src="~/Identity/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/Identity/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script>
+        let testedUrl;
+	    $('input[type="radio"]').on('click change', function(e) {
+	    	if (e.currentTarget.id === 'raw') {
+	    		$("#rawContentTypes").show(); //NO I18N
+	        	if (document.getElementById("raw").checked) {
+		        	document.getElementById("text").checked = true;
+		        	document.getElementById("text").parentElement.classList.add("focus");//NO I18N
+		        	document.getElementById("text").parentElement.classList.add("active");//NO I18N
+		        	document.getElementById("xml").parentElement.classList.remove("focus");//NO I18N
+		        	document.getElementById("xml").parentElement.classList.remove("active");//NO I18N
+		        	document.getElementById("json").parentElement.classList.remove("focus");//NO I18N
+		        	document.getElementById("json").parentElement.classList.remove("active");//NO I18N
+		        }
+		    } else if (e.currentTarget.id === 'form1') {
+		    	$("#rawContentTypes").hide(); //NO I18N
+		    }
+
+	        if (e.currentTarget.id === 'ccenable') {
+	        	if (document.getElementById("ccenable").checked) {
+	        		disableFields();
+					document.getElementById("cccontainer").style.display = "block";
+		        } else {
+		        	document.getElementById("cccontainer").style.display = "none";
+		        }
+		    }
+
+	        if (e.currentTarget.id === 'ccdisable') {
+	        	if (document.getElementById("ccdisable").checked) {
+	        		document.getElementById("cccontainer").style.display = "none";
+	        		$("#responseformat").attr('disabled', 'disabled');
+		        	$("#textcontainer").find('input').each(function () {
+				     	$(this).attr('disabled', 'disabled');
+					});
+					$("#textcontainer").find('select').each(function () {
+				     	$(this).attr('disabled', 'disabled');
+					});
+
+					$("#xmlhook").find('input').each(function () {
+				     	$(this).attr('disabled', 'disabled');
+					});
+					$("#xmlhook").find('select').each(function () {
+				     	$(this).attr('disabled', 'disabled');
+					});
+
+					$("#jsonhook").find('input').each(function () {
+				     	$(this).attr('disabled', 'disabled');
+					});
+					$("#jsonhook").find('select').each(function () {
+				     	$(this).attr('disabled', 'disabled');
+					});
+	        	}
+	        }
+	        
+
+	        if (e.currentTarget.id === 'chenable') {
+		        if (document.getElementById("chenable").checked) {
+		        	$("#custheader").find('input').each(function () {
+			     		$(this).removeAttr('disabled');
+					});
+					document.getElementById("custheader").style.display = "block";
+					togglecustomheaderdelete();
+		        } 
+		    }
+
+	        if (e.currentTarget.id === 'chdisable') {
+		        if (document.getElementById("chdisable").checked) {
+		        	document.getElementById("custheader").style.display = "none";
+		        	$("#custheader").find('input').each(function () {
+				     	$(this).attr('disabled', 'disabled');
+					});
+	        	}
+	    	}	
+	    });
+
+	    function numberWithCommas(x) {
+    		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+
+	    function addjsonpath() {
+	        $('<div class="jsonbox custbox field-wrap"><div class="form-group mr-2"> <input class="form-control" name="jsonpath" type="text" placeholder="Enter your JsonPath expression" required > </div><div class="btn-wrapper"><button type="button" class="delj btn m-0 line-btn" onclick="removejsonpath(this);"> <span class="sr-only">Remove JsonPath Expression</span> <i class="icon-delete align-middle"></i> </button> </div></div>').appendTo("#jsonhook").parentNode; //No I18N
+	        togglejsondelete()
+	    }
+
+	    function removejsonpath(expression) {
+	        let xpath = document.getElementById("jsonhook");
+	        xpath.removeChild(expression.parentNode.parentNode);
+        	togglejsondelete();
+	    }
+
+	    function addxpath() {
+	        $(' <div class="xmlbox field-wrap custbox"><div class="form-group mr-2"> <input class="form-control" name="xpath" type="text" placeholder="Enter your xpath expression" required > </div><div class="btn-wrapper ">  <button type="button" class="delx btn line-btn m-0" onclick="removexpath(this);"> <span class="sr-only">Remove Xpath Expression</span> <i class="icon-delete align-middle"></i> </button> </div></div>		').appendTo("#xmlhook").parentNode; //No I18N
+	        var numItems = $('.xmlbox').length
+	        togglexpathdelete();
+	    }
+
+	    function removexpath(expression) {
+	        let xpath = document.getElementById("xmlhook");
+	        xpath.removeChild(expression.parentNode.parentNode);
+	        togglexpathdelete();
+	    }
+	
+	    function addcustomheaders() {
+	        let custHeader = document.getElementById("inner-fields");
+	        if (custHeader.style.display == "none") {
+	            custHeader.style.display = "block";
+	        }
+	        $('<div class="field-wrap custbox"><div class="form-group mr-2"><input class="form-control" type="text" placeholder="Name" name="headername" required/></div><div class="form-group mr-2"> <input class="form-control" type="text" placeholder="Value" name="headervalue" required/></div><div class="btn-wrapper "><button type="button" class="delh btn line-btn m-0" onclick="removecustomheader(this);"><span class="sr-only">Remove Header</span><i class="icon-delete align-middle"></i></button></div></div>').appendTo("#inner-fields"); //No I18N
+			togglecustomheaderdelete();	        
+	    }
+	
+	    function removecustomheader(header) {
+	        let custHeader = document.getElementById("inner-fields");
+	        custHeader.removeChild(header.parentNode.parentNode);
+	        if (custHeader.childElementCount == 0) {
+	            custHeader.style.display = "none";
+	        }
+	        togglecustomheaderdelete();
+	    }
+
+	    function togglexpathdelete() {
+	    	var numItems = $('.xmlbox').length
+	    	if (numItems < 2) {
+	        	$('.delx').hide();
+	        } else {
+	        	$('.delx').show();
+	        }
+	    }
+
+	    function togglejsondelete() {
+	    	var numItems = $('.jsonbox').length
+	        if (numItems < 2) {
+	        	$('.delj').hide();
+	        } else {
+	        	$('.delj').show();
+	        }
+	    }
+
+	    function togglecustomheaderdelete() {
+	    	var numItems = $('.dummy').length;
+	        if (numItems < 2) {
+	        	$('.delh').hide();
+	        } else {
+				
+	        	$('.delh').show();
+	        }
+	    }
+	
+	    function onmethod() {
+	        var method = document.getElementById("method").value;
+	        if (method === "P" || method === "U" || method === "A") {
+	            document.getElementById("postDiv").style.display = "block";
+	        } else {
+	            document.getElementById("postDiv").style.display = "none";
+	        }
+	    }
+
+	    function onresponse() {
+	        var format = document.getElementById("responseformat").value;
+	        if (format === "t") {
+	        	$('#textcontainer').show();
+	        	$('#xmlcontainer').hide();
+	        	$('#jsoncontainer').hide();
+	        } else if (format === "x") {
+	        	$('#textcontainer').hide();
+	        	$('#xmlcontainer').show();
+	        	$('#jsoncontainer').hide();
+	        } else if (format === "j") {
+	        	$('#textcontainer').hide();
+	        	$('#xmlcontainer').hide();
+	        	$('#jsoncontainer').show();
+	        }
+	        disableFields();
+	    }
+	
+	    function rawdata() {
+	        var rawdata = document.getElementById("htmlresponse").innerHTML;
+	        var newWindow = window.open();
+	        newWindow.document.write("<pre><code>" + rawdata + "</code></pre>");
+	    }
+	
+	    function downloadsrc() {
+	    	var link = document.createElement("a");
+	    	if (document.getElementById("urlbox")) {
+	        	link.href = document.getElementById("urlbox").value;
+	    	} else if (document.getElementById("testedUrl")) {
+	    		link.href = document.getElementById("testedUrl").value;
+	    	}
+	        //var filename = "S247Tools_"+link.hostname+".txt";//NO I18N
+	        var filename = i18n_fileprefix+link.hostname+i18n_filetype;//NO I18N
+	        
+	        saveTextAsFile($("#htmlresponse").text() , filename);
+	    }
+	
+	    function hideTestResponse() {
+	        document.getElementById("testResponse").style.display = "none"; //NO I18N
+	    }
+	
+	    function expandBody() {
+	        $("#htmlresponse").toggleClass("pre-scrollable"); //NO I18N
+	        $("#expandBodyBtn").button("toggle"); //NO I18N
+	    }
+
+	    function copysrc(currentObj) {
+	    	if (currentObj === 'headers') {
+	    		var reqHeaders = $('#reqheaders').text();
+	    		var resHeaders = $('#resheaders').text();
+	    		//copyToClipboard("ReqHeaders:"+reqHeaders+"\n"+"ResHeaders:"+resHeaders);//NO I18N
+	    		copyToClipboard(i18n_reqheaderscolon+reqHeaders+"\n"+i18n_resheaderscolon+resHeaders);//NO I18N
+	    	} else {
+	    		copyToClipboard($('#htmlresponse').text());
+	    	}
+			
+			showToast("success", i18n_copyclipboardMessage); //No i18N
+	    }
+
+	    function saveTextAsFile(textToWrite, fileNameToSaveAs) {
+	        var textFileAsBlob = new Blob([textToWrite], { type: "text/plain" });
+	        var downloadLink = document.createElement("a");
+	        downloadLink.download = fileNameToSaveAs;
+	        //downloadLink.innerHTML = "Download File"; //NO I18N
+	        downloadLink.innerHTML = i18n_downloadFile; //NO I18N
+	        if (window.webkitURL != null) {
+	            // Chrome allows the link to be clicked
+	            // without actually adding it to the DOM.
+	            downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+	        } else {
+	            // Firefox requires the link to be added to the DOM
+	            // before it can be clicked.
+	            downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+	            downloadLink.onclick = destroyClickedElement;
+	            downloadLink.style.display = "none";
+	            document.body.appendChild(downloadLink);
+	        }
+	
+	        downloadLink.click();
+	    }
+		
+		function disableFields() {
+			if (document.getElementById("responseformat").value === "t") {
+				$("#cccontainer").find('input').each(function () {
+			     	$(this).removeAttr('disabled');
+				});
+        		$("#xmlhook").find('input').each(function () {
+			     	$(this).attr('disabled', 'disabled');
+				});
+				$("#jsonhook").find('input').each(function () {
+			     	$(this).attr('disabled', 'disabled');
+				});
+        	} else if (document.getElementById("responseformat").value === "x") {
+        		$("#cccontainer").find('input').each(function () {
+			     	$(this).attr('disabled', 'disabled');
+				});
+				$("#xmlhook").find('input').each(function () {
+			     	$(this).removeAttr('disabled');
+				});
+				$("#jsonhook").find('input').each(function () {
+			     	$(this).attr('disabled', 'disabled');
+				});
+        	} else if (document.getElementById("responseformat").value === "j") {
+        		$("#cccontainer").find('input').each(function () {
+			     	$(this).attr('disabled', 'disabled');
+				});
+				$("#xmlhook").find('input').each(function () {
+			     	$(this).attr('disabled', 'disabled');
+				});
+				$("#jsonhook").find('input').each(function () {
+			     	$(this).removeAttr('disabled');
+				});
+        	}
+        	$("#responseformat").removeAttr('disabled');
+		}
+
+	    $("#form").submit(function (event) {
+	        event.preventDefault();
+	        document.getElementById("pg-container").style.display = "block";
+	        document.getElementById("testBtn").disabled = true;
+			$("#permacontainer").hide();
+
+	        var urlvalue = document.getElementById("urlbox").value;
+	        if (urlvalue && !urlvalue.startsWith("http://") && !urlvalue.startsWith("https://")) {
+	            document.getElementById("urlbox").value = i18n_http + urlvalue; //NO I18N
+	        }
+
+	        if (document.getElementById("form1").checked) {
+	        	document.getElementById("xml").disabled = true;
+	        	document.getElementById("json").disabled = true;
+	        	document.getElementById("text").disabled = true;
+	        }
+	        if (document.getElementById("raw").checked || document.getElementById("text").checked || document.getElementById("xml").checked || document.getElementById("json").checked) {
+	        	document.getElementById("raw").disabled = true;
+	        	document.getElementById("form1").disabled = true;
+	        }
+
+	        if (document.getElementById("chdisable").checked) {
+	        	document.getElementById("chdisable").disabled = true;
+	        }
+
+	        if (document.getElementById("ccdisable").checked) {
+	        	document.getElementById("ccdisable").disabled = true;
+	        } else {
+	        	disableFields();
+	        }
+
+	        if (document.getElementById("selectvalue").value === "None") {
+	        	document.getElementById("selectvalue").disabled = true;
+	        	document.getElementById("hheadername").disabled = true;
+	        }
+
+	        var method = document.getElementById("method").value;
+	        if (method === "G" || method === "D" || method === "H") {
+	            document.getElementById("requestbody").disabled = true;
+	        } 
+
+	        var postData = $(this).serialize();
+
+	        document.getElementById("xml").disabled = false;
+        	document.getElementById("json").disabled = false;
+        	document.getElementById("text").disabled = false;
+        	document.getElementById("raw").disabled = false;
+        	document.getElementById("form1").disabled = false;
+        	document.getElementById("chdisable").disabled = false;
+        	document.getElementById("ccdisable").disabled = false;
+        	document.getElementById("selectvalue").disabled = false;
+        	document.getElementById("hheadername").disabled = false;
+        	document.getElementById("requestbody").disabled = false;
+
+        	var start = new Date();
+	        $.ajax({
+	            type: "post", //NO I18N
+	            url: "/tools/restapi-tester", //NO I18N
+	            data: postData,
+	            contentType: "application/x-www-form-urlencoded", //NO I18N
+	            success: function (responseData, textStatus, jqXHR) {
+	            	var end = new Date();
+
+	                document.getElementById("pg-container").style.display = "none";
+	                document.getElementById("testBtn").disabled = false;
+	                document.getElementById("testBtn").textContent = i18n_testagain; //NO I18N
+	                var iserror = true;
+	                if (responseData) {
+	                	render(responseData);
+					} else {
+	                    document.getElementById("errorCard").style.display = "block";
+	                    $("#errorresponse").text(i18n_errtext);
+	                    document.getElementById("bodyCard").style.display = "none";
+	                    //$("#responseTime").text((end - start)+" ms");//NO I18N
+	                    $("#responseTime").text((end - start)+" "+i18n_ms);//NO I18N
+                    	$("#testStatusFail").show();
+                    	$("#testStatusPass").hide();
+                    	document.getElementById("headersCard").style.display = "none";
+						document.getElementById("bodyCard").style.display = "none";
+	                }
+
+	                $('#tool-promo-card').show();
+	            },
+	            error: function (jqXHR, textStatus, errorThrown) {
+	            	var end = new Date();
+	            	document.getElementById("testBtn").disabled = false;
+	                document.getElementById("testBtn").textContent = i18n_testagain; //NO I18N
+	                document.getElementById("pg-container").style.display = "none";
+	                //$("#responseTime").text((end - start)+" ms");//NO I18N
+	                $("#responseTime").text((end - start)+" "+i18n_ms);//NO I18N
+                	$("#testStatusFail").show();
+                	$("#testStatusPass").hide();
+                	document.getElementById("headersCard").style.display = "none";
+					document.getElementById("bodyCard").style.display = "none";
+	                if (errorThrown) {
+	                    $("#errorresponse").text(errorThrown);
+	                    document.getElementById("errorCard").style.display = "block";
+	                    document.getElementById("headersCard").style.display = "none";
+	                    document.getElementById("bodyCard").style.display = "none";
+	                    $("#errorresponse").text(i18n_errtext);
+	                }
+	            }
+	        });
+	    });
+	
+	    $(".collapse-toggle-btn").click(function(){  //NO I18N
+            $(this).find("i[class^='icon-']").toggle(); //NO I18N
+        });
+	    
+	    function render(responseData) {
+	    	 if (typeof(responseData) === "string") {
+			    responseData = JSON.parse(responseData);
+			    if (responseData.testedUrl) {
+			    	updateHeader(responseData.testedUrl, responseData.loc, responseData.time);
+			    }
+			  }
+			testedUrl = responseData.testedUrl;
+			document.getElementById("testResponse").style.display = "block";
+
+			if (responseData.reason) {
+				if (responseData.reason) {
+					//errtext = (responseData.reason).substring(0, (responseData.reason).lastIndexOf(" ") + 1)+" "+responseData.testedUrl;
+					i18n_errtext = (responseData.reason.replace("\"", "").replace("\"", "").replace(".", ""))+" "+responseData.testedUrl;
+				}
+				
+				$("#errorresponse").text(i18n_errtext);
+				$("#errorCard").show();
+				$("#headersCard").hide();
+				$("#bodyCard").hide();
+			} else {
+				$("#errorCard").hide();
+			}
+			if (responseData.responsetime && responseData.responsetime > 0) {
+				$("#timebox").show();
+				$("#responseTime").text(numberWithCommas(responseData.responsetime) +" "+i18n_ms);//NO I18N
+				if (responseData.dnstime) {
+					$("#dnsTime").text(numberWithCommas(responseData.dnstime) +" "+i18n_ms);//NO I18N
+				}
+				if (responseData.connectiontime) {
+					$("#conxTime").text(numberWithCommas(responseData.connectiontime) +" "+i18n_ms);//NO I18N
+				}
+				if (responseData.sslhandshaketime && responseData.sslhandshaketime > -1) {
+					$("#sslTime").text(numberWithCommas(responseData.sslhandshaketime) +" "+i18n_ms);//NO I18N
+				} else {
+					$("#sslTime").text("N/A");//NO I18N
+				}
+				if (responseData.firstbytetime) {
+					$("#fbTime").text(numberWithCommas(responseData.firstbytetime) +" "+i18n_ms);//NO I18N
+				}
+				if (responseData.lastbytetime) {
+					$("#lbTime").text(numberWithCommas(responseData.lastbytetime) +" "+i18n_ms);//NO I18N
+				}
+				if (responseData.responseTime) {
+					$("#responseTime").text(numberWithCommas(responseData.responseTime) +" "+i18n_ms);//NO I18N
+				}
+				$("#testStatusFail").hide();
+				$("#testStatusPass").show();
+				if (responseData.permalink) {
+					$("#permalink").val(responseData.permalink);
+					$("#permacontainer").show();
+				}
+			} else {
+				$("#testStatusFail").show();
+				$("#testStatusPass").hide();
+				$("#permacontainer").hide();
+				$("#timebox").hide();
+				document.getElementById("headersCard").style.display = "none";
+				document.getElementById("bodyCard").style.display = "none";
+			}/*else if (typeof end !== 'undefined'){//NO I18N
+				$("#responseTime").text((end - start)+" ms");//NO I18N
+				$("#testStatusFail").show();
+				$("#testStatusPass").hide();
+			}*/
+			if (responseData.reqheaders) {
+				document.getElementById("headersCard").style.display = "block";
+				if (responseData.reqheaders) {
+					var reqheaderstring = "";
+					for(header in responseData.reqheaders) {
+						reqheaderstring = reqheaderstring + (responseData.reqheaders[header]);
+					}
+					document.getElementById("reqheaders").innerHTML = reqheaderstring;
+					document.getElementById("reqhdrBox").style.display = "block";
+					document.getElementById("errorCard").style.display = "none";
+					iserror = false;
+				}
+				
+			} else {
+				document.getElementById("reqhdrBox").style.display = "none";
+			}
+			if (responseData.resheaders) {
+				document.getElementById("headersCard").style.display = "block";
+				if (responseData.resheaders) {
+					var resheaderstring = "";
+					for(header in responseData.resheaders) {
+						resheaderstring = resheaderstring + (responseData.resheaders[header]);
+					}
+					document.getElementById("resheaders").innerHTML = resheaderstring;
+					document.getElementById("reshdrBox").style.display = "block";
+					document.getElementById("errorCard").style.display = "none";
+					iserror = false;
+				}
+				
+			} else {
+				document.getElementById("reshdrBox").style.display = "none";
+			}
+			if (responseData.htmlresponse) {
+				
+				var response = responseData.htmlresponse;
+				if (responseData.responseheaders && responseData.responseheaders.indexOf("json") !== -1) {
+					response = JSON.stringify(JSON.parse(responseData.htmlresponse), null, 2);
+				} else if (responseData.responseheaders && responseData.responseheaders.indexOf("xml") !== -1) {
+					response = prettifyXml(responseData.htmlresponse);
+				}
+				$("#htmlresponse").text(response);
+				document.getElementById("bodyCard").style.display = "block";
+				iserror = false;
+			} else {
+				document.getElementById("bodyCard").style.display = "none";
+			}
+
+			if ((responseData.responsetime && responseData.responsetime > 0)) {
+				if (responseData.contentCheck) {
+					if(responseData.xmlFailed || responseData.jsonFailed || responseData.acontentcheck || responseData.ucontentcheck) {
+						$('#validStatusPass').hide();
+						$('#validStatusFail').show();
+						$("#validationcard").show();
+
+						if (responseData.acontentcheck) {
+							$("#validationerror").text(i18n_strnotcontains+ responseData.availableFailedString);
+						}
+						else if (responseData.ucontentcheck) {
+							$("#validationerror").text(i18n_strcontains+ responseData.unAvailableFailedString);
+						}
+						else if (responseData.xmlFailed) {
+							$("#validationerror").text(i18n_invalidxml+ responseData.xmlFailedString);
+						}
+						else if (responseData.jsonFailed) {
+							$("#validationerror").text(i18n_invalidjson+ responseData.jsonFailedString);
+						}
+					} else {
+						$('#validStatusPass').show();
+						$('#validStatusFail').hide();
+						$("#validationcard").hide();
+					}
+					$('#validStatusNA').hide();
+				} else {
+					$('#validStatusNA').show();
+					$('#validStatusPass').hide();
+					$('#validStatusFail').hide();
+					$("#validationcard").hide();
+				}
+				
+			} else {
+				$('#validStatusNA').show();
+				$('#validStatusPass').hide();
+				$('#validStatusFail').hide();
+				$("#validationcard").hide();
+			} 			
+		}
+
+		}
+    </script>
 </environment>
 <environment exclude="Development">
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"
@@ -15,4 +550,5 @@
             crossorigin="anonymous"
             integrity="sha384-ifv0TYDWxBHzvAk2Z0n8R434FL1Rlv/Av18DXE43N/1rvHyOG4izKst0f2iSLdds">
     </script>
+    <script></script>
 </environment>
