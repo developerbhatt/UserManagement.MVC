@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Krunal\\Source\\Repos\\UserManagement.MVC\\UserManagement.MVC\\UserManagement.MVC.csproj": {}
+    "C:\\Users\\Krunal\\source\\repos\\UserManagement.MVC\\UserManagement.MVC\\UserManagement.MVC.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Krunal\\Source\\Repos\\UserManagement.MVC\\UserManagement.MVC\\UserManagement.MVC.csproj": {
+    "C:\\Users\\Krunal\\source\\repos\\UserManagement.MVC\\UserManagement.MVC\\UserManagement.MVC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Krunal\\Source\\Repos\\UserManagement.MVC\\UserManagement.MVC\\UserManagement.MVC.csproj",
+        "projectUniqueName": "C:\\Users\\Krunal\\source\\repos\\UserManagement.MVC\\UserManagement.MVC\\UserManagement.MVC.csproj",
         "projectName": "UserManagement.MVC",
-        "projectPath": "C:\\Users\\Krunal\\Source\\Repos\\UserManagement.MVC\\UserManagement.MVC\\UserManagement.MVC.csproj",
+        "projectPath": "C:\\Users\\Krunal\\source\\repos\\UserManagement.MVC\\UserManagement.MVC\\UserManagement.MVC.csproj",
         "packagesPath": "C:\\Users\\Krunal\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Krunal\\Source\\Repos\\UserManagement.MVC\\UserManagement.MVC\\obj\\",
+        "outputPath": "C:\\Users\\Krunal\\source\\repos\\UserManagement.MVC\\UserManagement.MVC\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Krunal\\AppData\\Roaming\\NuGet\\NuGet.Config",
