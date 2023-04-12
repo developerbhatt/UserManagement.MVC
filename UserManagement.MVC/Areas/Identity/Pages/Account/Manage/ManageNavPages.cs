@@ -24,6 +24,8 @@ namespace UserManagement.MVC.Areas.Identity.Pages.Account.Manage
         public static string APIRequestData => "APIRequestData";
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
+        public static string EmailConfiguration => "EmailConfiguration";
+        public static string GeneralConfiguration => "GeneralConfiguration";
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
@@ -41,6 +43,8 @@ namespace UserManagement.MVC.Areas.Identity.Pages.Account.Manage
         public static string APIRequestNavClass(ViewContext viewContext) => PageNavClass(viewContext, APIRequestData);
 
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
+        public static string EmailConfigurationNavClass(ViewContext viewContext) => PageNavClass(viewContext, EmailConfiguration);
+        public static string GeneralConfigurationNavClass(ViewContext viewContext) => PageNavClass(viewContext, GeneralConfiguration);
 
         private static string PageNavClass(ViewContext viewContext, string page)
         {

@@ -351,3 +351,6 @@ MigrationBackup/
 /UserManagement.MVC/obj/Debug/net6.0/UserManagement.MVC.assets.cache
 /UserManagement.MVC/obj/Debug/net6.0/UserManagement.MVC.GeneratedMSBuildEditorConfig.editorconfig
 /.vs/UserManagement.MVC/v17/.suo
+/UserManagement.MVC/bin/Debug/net6.0/UserManagement.MVC.dll
+/UserManagement.MVC/bin/Debug/net6.0/UserManagement.MVC.pdb
+/UserManagement.MVC/obj/UserManagement.MVC.csproj.nuget.dgspec.json

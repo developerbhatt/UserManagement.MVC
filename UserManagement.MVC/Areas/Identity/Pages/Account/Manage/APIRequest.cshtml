@@ -1,7 +1,7 @@
 ﻿@page
 @model APIRequestModel
 @{
-    ViewData["Title"] = "Call APIs";
+    ViewData["Title"] = "Source : Call Login API";
     ViewData["ActivePage"] = ManageNavPages.APIRequestData;
 }
 
@@ -16,7 +16,7 @@
             flex: 1 1 0px;
         }
 
-        #urlbox{
+        #urlbox {
             width: 500px !important;
         }
 
@@ -33,11 +33,39 @@
     </style>
 </head>
 
-<h4>@ViewData["Title"]</h4>
-
 <div class="row">
 
     <form name="restapiform" id="form" method="post" onsubmit="hideTestResponse()">
+
+        <div class="multi-fields">
+            <div class="form-group sm-field select-field mr-2">
+                <label for="processType">Process Type</label>
+                <select name="processType" asp-for="Input.ProcessType" id="processType" class="form-control" onchange="onChangeProcessType();">
+                    <option value="1">API To API</option>
+                    <option value="2">API To File</option>
+                    <option value="3">File To API</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="urlbox">Add Process Name Setting</label>
+                <input class="form-control" asp-for="Input.ProcessName" id="processName" name="url" type="text" placeholder="Process Name" required="" autocorrect="off" autocapitalize="none">
+            </div>
+            <div class="form-group sm-field select-field mr-2">
+                <label for="syncTimer">Sync Timer</label>
+                <select name="syncTimer" asp-for="Input.SyncTimer" id="syncTimer" class="form-control" onchange="onChangeSyncTimer();">
+                    <option value="1">5 Minutes</option>
+                    <option value="2">10 Minutes</option>
+                    <option value="3">15 Minutes</option>
+                    <option value="4">30 Minutes</option>
+                    <option value="5">1 Hour</option>
+                    <option value="6">Daily</option>
+                </select>
+            </div>
+        </div>
+        
+        <h4>@ViewData["Title"]</h4>
+        <hr />
+
         <div class="multi-fields">
             <div class="field-group">
                 <div class="form-group sm-field select-field mr-2">
@@ -88,28 +116,28 @@
         </div>
 
         @*<div class="multi-fields">
-   <div class="field-group mr-0 active" id="custheader" style="display: block;">
-      <div id="dummy" class="field-wrap dummy">
-         <div class="field-wrap flex-nowrap custom-header-field">
-            <div class="form-group mr-2"><input class="form-control" type="text" placeholder="Name" name="headername" required="" autocorrect="off" autocapitalize="none"></div>
-            <div class="form-group"><input class="form-control" type="text" placeholder="Value" name="headervalue" required="" autocorrect="off" autocapitalize="none"></div>
-            <div class=" btn-wrapper ml-2 btn-wrap-width">
-               <div class=" d-flex align-items-center justify-content-start">
-                   <button type="button" class="btn rounded-0 ml-0 mr-0" onclick="addcustomheaders();">
-                  <span class="sr-only">Add Header</span>
-                  <i class="icon-add align-middle"></i>
-                  </button>
-                  <button type="button" class="line-btn ml-2 mr-0" onclick="removecustomheader(this);" style="display:block">
-                  <span class="sr-only">Remove Header</span>
-                  <i class="icon-delete align-middle"></i>
-                  </button>
-               </div>
+            <div class="field-group mr-0 active" id="custheader" style="display: block;">
+                <div id="dummy" class="field-wrap dummy">
+                    <div class="field-wrap flex-nowrap custom-header-field">
+                        <div class="form-group mr-2"><input class="form-control" type="text" placeholder="Name" name="headername" required="" autocorrect="off" autocapitalize="none"></div>
+                        <div class="form-group"><input class="form-control" type="text" placeholder="Value" name="headervalue" required="" autocorrect="off" autocapitalize="none"></div>
+                        <div class=" btn-wrapper ml-2 btn-wrap-width">
+                            <div class=" d-flex align-items-center justify-content-start">
+                                <button type="button" class="btn rounded-0 ml-0 mr-0" onclick="addcustomheaders();">
+                                    <span class="sr-only">Add Header</span>
+                                    <i class="icon-add align-middle"></i>
+                                </button>
+                                <button type="button" class="line-btn ml-2 mr-0" onclick="removecustomheader(this);" style="display:block">
+                                    <span class="sr-only">Remove Header</span>
+                                    <i class="icon-delete align-middle"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="inner-fields" class="field-wrap dummy d-flex"></div>
+                </div>
             </div>
-         </div>
-         <div id="inner-fields" class="field-wrap dummy d-flex"></div>
-      </div>
-   </div>
-</div>*@
+        </div>*@
 
     </form>
 

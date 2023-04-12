@@ -25,6 +25,9 @@ namespace UserManagement.MVC.Areas.Identity.Pages.Account.Manage
             public string RequestUrl { get; set; }
             public string RequestBody { get; set; }
             public string ResponseBody { get; set; }
+            public string ProcessType { get; set; }
+            public string ProcessName { get; set; }
+            public string SyncTimer { get; set; }
         }
 
         public void OnGet()
