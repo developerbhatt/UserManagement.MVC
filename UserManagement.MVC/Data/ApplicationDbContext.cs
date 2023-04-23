@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using UserManagement.MVC.Models;
@@ -52,6 +49,18 @@ namespace UserManagement.MVC.Data
             {
                 entity.ToTable("UserTokens");
             });
+
+            builder.Entity<IdentityUserToken<string>>(entity =>
+            {
+                entity.ToTable("UserTokens");
+            });
+
+            builder.Entity<SaveProcess>(entity =>
+            {
+                entity.ToTable(name: "SaveProcess").HasKey(e => e.Id);
+            });
         }
+
+        public DbSet<SaveProcess> SaveProcesses { get; set; }
     }
 }

@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
-using Microsoft.DotNet.Scaffolding.Shared.CodeModifier.CodeChange;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RestSharp;
-using System;
+using System.Linq;
 using System.Threading.Tasks;
+using UserManagement.MVC.Data;
 using UserManagement.MVC.Models;
 
 namespace UserManagement.MVC.Areas.Identity.Pages.Account.Manage
@@ -15,6 +15,7 @@ namespace UserManagement.MVC.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<PersonalDataModel> _logger;
+        private readonly ApplicationDbContext _dbContext;
         public string APIUrl { get; set; }
 
         [BindProperty]
@@ -28,6 +29,8 @@ namespace UserManagement.MVC.Areas.Identity.Pages.Account.Manage
             public string ProcessType { get; set; }
             public string ProcessName { get; set; }
             public string SyncTimer { get; set; }
+            public string sourceField { get; set; }
+            public string destinationField { get; set; }
         }
 
         public void OnGet()
@@ -53,7 +56,7 @@ namespace UserManagement.MVC.Areas.Identity.Pages.Account.Manage
                 if (!string.IsNullOrEmpty(requestURI))
                     Input.RequestUrl = requestURI;
 
-                if(!string.IsNullOrEmpty(Request.Form["method"]))
+                if (!string.IsNullOrEmpty(Request.Form["method"]))
                     Input.MethodName = Request.Form["method"];
 
                 Input.RequestBody = string.Empty;
@@ -80,6 +83,71 @@ namespace UserManagement.MVC.Areas.Identity.Pages.Account.Manage
 
             if (!string.IsNullOrEmpty(Request.Form["method"]))
                 Input.MethodName = Request.Form["method"];
+        }
+        
+        public void SaveProcess([FromBody] SaveProcess saveProcess)
+        {
+            if (ModelState.IsValid)
+            {
+                if (saveProcess.RequestMethodType.ToUpper() == "POST")
+                {
+                    if (!string.IsNullOrEmpty(saveProcess.RequestBody))
+                    {
+                        _dbContext.SaveProcesses.Add(saveProcess);
+                        _dbContext.SaveChanges();
+                    }
+                }
+                else
+                {
+                    _dbContext.SaveProcesses.Add(saveProcess);
+                    _dbContext.SaveChanges();
+                }
+            }
+        }
+
+        public void OnPostSaveProcess([FromBody] SaveProcess saveProcess)
+        {
+            if (ModelState.IsValid)
+            {
+                if (saveProcess.RequestMethodType.ToUpper() == "POST")
+                {
+                    if (!string.IsNullOrEmpty(saveProcess.RequestBody))
+                    {
+                        _dbContext.SaveProcesses.Add(saveProcess);
+                        _dbContext.SaveChanges();
+                    }
+                }
+                else
+                {
+                    _dbContext.SaveProcesses.Add(saveProcess);
+                    _dbContext.SaveChanges();
+                }
+            }
+        }
+
+        public async Task<IActionResult> OnPostCreateAsync([FromBody] SaveProcess saveProcess)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["SaveProcesses"] = _dbContext.SaveProcesses.ToList();
+                return Page();
+            }
+
+            if (saveProcess.RequestMethodType.ToUpper() == "POST")
+            {
+                if (!string.IsNullOrEmpty(saveProcess.RequestBody))
+                {
+                    _dbContext.SaveProcesses.Add(saveProcess);
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+            else
+            {
+                _dbContext.SaveProcesses.Add(saveProcess);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return RedirectToPage("/APIRequest");
         }
     }
 }

@@ -354,3 +354,12 @@ MigrationBackup/
 /UserManagement.MVC/bin/Debug/net6.0/UserManagement.MVC.dll
 /UserManagement.MVC/bin/Debug/net6.0/UserManagement.MVC.pdb
 /UserManagement.MVC/obj/UserManagement.MVC.csproj.nuget.dgspec.json
+
+*.suo
+*.user
+_ReSharper.*
+bin
+obj
+packages
+/UserManagement.MVC/obj/Debug/net6.0/UserManagement.MVC.pdb
+/UserManagement.MVC/obj/Debug/net6.0/UserManagement.MVC.dll
