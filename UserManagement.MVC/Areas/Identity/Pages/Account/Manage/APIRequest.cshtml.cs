@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RestSharp;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using UserManagement.MVC.Data;
@@ -17,6 +18,11 @@ namespace UserManagement.MVC.Areas.Identity.Pages.Account.Manage
         private readonly ILogger<PersonalDataModel> _logger;
         private readonly ApplicationDbContext _dbContext;
         public string APIUrl { get; set; }
+
+        public APIRequestModel(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -84,7 +90,7 @@ namespace UserManagement.MVC.Areas.Identity.Pages.Account.Manage
             if (!string.IsNullOrEmpty(Request.Form["method"]))
                 Input.MethodName = Request.Form["method"];
         }
-        
+
         public void SaveProcess([FromBody] SaveProcess saveProcess)
         {
             if (ModelState.IsValid)
@@ -146,6 +152,81 @@ namespace UserManagement.MVC.Areas.Identity.Pages.Account.Manage
                 _dbContext.SaveProcesses.Add(saveProcess);
                 await _dbContext.SaveChangesAsync();
             }
+
+            return RedirectToPage("/APIRequest");
+        }
+
+        public async Task<IActionResult> OnPostCreateProcessSettingAsync([FromBody] SaveProceeSettingDetailModel saveProceeSettingDetailModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["SaveProceeSettingDetail"] = _dbContext.SaveProceeSettingDetailModels.ToList();
+                return Page();
+            }
+
+            saveProceeSettingDetailModel.IDate = DateTime.Now;
+            _dbContext.SaveProceeSettingDetailModels.Add(saveProceeSettingDetailModel);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToPage("/APIRequest");
+        }
+
+        public async Task<IActionResult> OnPostCreateSourceLoginAPIAsync([FromBody] SourceLoginAPIModel sourceLoginAPIModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["SourceLoginAPIModel"] = _dbContext.SourceLoginAPIModels.ToList();
+                return Page();
+            }
+
+            sourceLoginAPIModel.IDate = DateTime.Now;
+            _dbContext.SourceLoginAPIModels.Add(sourceLoginAPIModel);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToPage("/APIRequest");
+        }
+
+        public async Task<IActionResult> OnPostCreateSourceDataAPIAsync([FromBody] SourceDataAPIModel sourceDataAPIModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["SourceDataAPIModel"] = _dbContext.SourceDataAPIModels.ToList();
+                return Page();
+            }
+
+            sourceDataAPIModel.IDate = DateTime.Now;
+            _dbContext.SourceDataAPIModels.Add(sourceDataAPIModel);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToPage("/APIRequest");
+        }
+
+        public async Task<IActionResult> OnPostCreateDestinationLoginAPIAsync([FromBody] DestinationLoginAPIModel destinationLoginAPIModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["DestinationLoginAPIModel"] = _dbContext.DestinationLoginAPIModels.ToList();
+                return Page();
+            }
+
+            destinationLoginAPIModel.IDate = DateTime.Now;
+            _dbContext.DestinationLoginAPIModels.Add(destinationLoginAPIModel);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToPage("/APIRequest");
+        }
+
+        public async Task<IActionResult> OnPostCreateDestinationDataAPIAsync([FromBody] DestinationDataAPIModel destinationDataAPIModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["DestinationDataAPIModel"] = _dbContext.DestinationDataAPIModels.ToList();
+                return Page();
+            }
+
+            destinationDataAPIModel.IDate = DateTime.Now;
+            _dbContext.DestinationDataAPIModels.Add(destinationDataAPIModel);
+            await _dbContext.SaveChangesAsync();
 
             return RedirectToPage("/APIRequest");
         }

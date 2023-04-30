@@ -15,7 +15,7 @@
             flex: 1 1 0px;
         }
 
-        #urlbox {
+        input[id^="urlbox"] {
             width: 500px !important;
         }
 
@@ -85,7 +85,7 @@
                     </div>
 
                     <div class="form-group">
-                        <button id="btnNextTab2" type="button" class="fill-btn" style="margin: 0 0 0 0px;float: right;" onclick="onNextClick(1)">Next</button>
+                        <button id="btnNextTab2" type="button" class="fill-btn" style="margin: 0 0 0 0px;float: right;" onclick="onNextSaveTab1()">Next</button>
                     </div>
                 </div>
 
@@ -110,7 +110,7 @@
                                 <input class="form-control" asp-for="Input.RequestUrl" id="urlbox" name="url" type="text" placeholder="Enter your Rest API/URL" required="" autocorrect="off" autocapitalize="none">
                             </div>
                             <div class="form-group">
-                                <button id="testBtn" type="submit" class=" fill-btn " style="margin: 0 0 0 18px;">Test</button>
+                                <button id="testBtn" type="submit" class=" fill-btn " style="margin: 0 0 0 18px;" onclick="getAPIResponse('method','urlbox','requestbody','responsebody')">Test</button>
                             </div>
                         </div>
 
@@ -145,7 +145,7 @@
                         <button id="btnPreviousTab1" type="button" class="fill-btn" style="margin: 0 0 0 0px;float: left;" onclick="onPreviousClick(2)">Previous</button>
                     </div>
                     <div class="form-group">
-                        <button id="btnNextTab3" type="button" class="fill-btn" style="margin: 0 0 0 0px;float: right;" onclick="onNextClick(2)">Next</button>
+                        <button id="btnNextTab3" type="button" class="fill-btn" style="margin: 0 0 0 0px;float: right;" onclick="onNextSaveTab2()">Next</button>
                     </div>
                 </div>
 
@@ -156,7 +156,7 @@
                         <div class="field-group">
                             <div class="form-group sm-field select-field mr-2">
                                 <label for="method">Method</label>
-                                <select name="method" asp-for="Input.MethodName" id="method" class="form-control" onchange="onmethod();">
+                                <select name="method3" id="method3" class="form-control" onchange="onmethod();">
                                     <option value="Get">GET</option>
                                     <option value="Post">POST</option>
                                     <option value="Put">PUT</option>
@@ -167,14 +167,14 @@
                             </div>
                             <div class="form-group">
                                 <label for="urlbox">Rest API Endpoint</label>
-                                <input class="form-control" asp-for="Input.RequestUrl" id="urlbox" name="url" type="text" placeholder="Enter your Rest API/URL" required="" autocorrect="off" autocapitalize="none">
+                                <input class="form-control" id="urlbox3" name="url3" type="text" placeholder="Enter your Rest API/URL" required="" autocorrect="off" autocapitalize="none">
                             </div>
                             <div class="form-group">
-                                <button id="testBtn" type="submit" class=" fill-btn " style="margin: 0 0 0 18px;">Test</button>
+                                <button id="testBtn3" type="submit" class=" fill-btn " style="margin: 0 0 0 18px;" onclick="getAPIResponse('method3','urlbox3','requestbody3','responsebody3')">Test</button>
                             </div>
                         </div>
 
-                        <div class="field-group w-100" id="postDiv" style="display: block;">
+                        <div class="field-group w-100" id="postDiv3" style="display: block;">
                             <div class="form-group">
                                 <label>Post Data</label>
                                 <!-- Type Selection -->
@@ -189,14 +189,14 @@
                                         <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="bodytype" id="json" value="J"><label class="form-check-label" for="json">JSON</label> </div>
                                     </div>
                                 </div>
-                                <textarea class="form-control mt-2" asp-for="Input.RequestBody" id="requestbody" name="requestbody" placeholder="Send data to website via POST method, one per line. Eg.j_username=joe" rows="3"></textarea>
+                                <textarea class="form-control mt-2" id="requestbody3" name="requestbody3" placeholder="Send data to website via POST method, one per line. Eg.j_username=joe" rows="3"></textarea>
                             </div>
                         </div>
 
                         <div class="field-group w-100" id="ResponseDiv" style="display: block;">
                             <div class="form-group">
                                 <label>Response Data</label>
-                                <textarea class="form-control mt-2" asp-for="Input.ResponseBody" id="responsebody" name="responsebody" placeholder="Enter the URL and click Send to get a response" rows="5" readonly></textarea>
+                                <textarea class="form-control mt-2" id="responsebody3" name="responsebody3" placeholder="Enter the URL and click Send to get a response" rows="5" readonly></textarea>
                             </div>
                         </div>
                     </div>
@@ -205,7 +205,7 @@
                         <button id="btnPreviousTab2" type="button" class="fill-btn" style="margin: 0 0 0 0px;float: left;" onclick="onPreviousClick(3)">Previous</button>
                     </div>
                     <div class="form-group">
-                        <button id="btnNextTab4" type="button" class="fill-btn" style="margin: 0 0 0 0px;float: right;" onclick="onNextClick(3)">Next</button>
+                        <button id="btnNextTab4" type="button" class="fill-btn" style="margin: 0 0 0 0px;float: right;" onclick="onNextSaveTab3()">Next</button>
                     </div>
                 </div>
 
@@ -216,7 +216,7 @@
                         <div class="field-group">
                             <div class="form-group sm-field select-field mr-2">
                                 <label for="method">Method</label>
-                                <select name="method" asp-for="Input.MethodName" id="method" class="form-control" onchange="onmethod();">
+                                <select name="method4" id="method4" class="form-control" onchange="onmethod();">
                                     <option value="Get">GET</option>
                                     <option value="Post">POST</option>
                                     <option value="Put">PUT</option>
@@ -227,10 +227,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="urlbox">Rest API Endpoint</label>
-                                <input class="form-control" asp-for="Input.RequestUrl" id="urlbox" name="url" type="text" placeholder="Enter your Rest API/URL" required="" autocorrect="off" autocapitalize="none">
+                                <input class="form-control" id="urlbox4" name="url" type="text" placeholder="Enter your Rest API/URL" required="" autocorrect="off" autocapitalize="none">
                             </div>
                             <div class="form-group">
-                                <button id="testBtn" type="submit" class=" fill-btn " style="margin: 0 0 0 18px;">Test</button>
+                                <button id="testBtn4" type="submit" class=" fill-btn " style="margin: 0 0 0 18px;" onclick="getAPIResponse('method4','urlbox4','requestbody4','responsebody4')">Test</button>
                             </div>
                         </div>
 
@@ -249,14 +249,14 @@
                                         <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="bodytype" id="json" value="J"><label class="form-check-label" for="json">JSON</label> </div>
                                     </div>
                                 </div>
-                                <textarea class="form-control mt-2" asp-for="Input.RequestBody" id="requestbody" name="requestbody" placeholder="Send data to website via POST method, one per line. Eg.j_username=joe" rows="3"></textarea>
+                                <textarea class="form-control mt-2" id="requestbody4" name="requestbody4" placeholder="Send data to website via POST method, one per line. Eg.j_username=joe" rows="3"></textarea>
                             </div>
                         </div>
 
-                        <div class="field-group w-100" id="ResponseDiv" style="display: block;">
+                        <div class="field-group w-100" id="ResponseDiv4" style="display: block;">
                             <div class="form-group">
                                 <label>Response Data</label>
-                                <textarea class="form-control mt-2" asp-for="Input.ResponseBody" id="responsebody" name="responsebody" placeholder="Enter the URL and click Send to get a response" rows="5" readonly></textarea>
+                                <textarea class="form-control mt-2" id="responsebody4" name="responsebody4" placeholder="Enter the URL and click Send to get a response" rows="5" readonly></textarea>
                             </div>
                         </div>
                     </div>
@@ -264,7 +264,7 @@
                         <button id="btnPreviousTab3" type="button" class="fill-btn" style="margin: 0 0 0 0px;float: left;" onclick="onPreviousClick(4)">Previous</button>
                     </div>
                     <div class="form-group">
-                        <button id="btnNextTab5" type="button" class="fill-btn" style="margin: 0 0 0 0px;float: right;" onclick="onNextClick(4)">Next</button>
+                        <button id="btnNextTab5" type="button" class="fill-btn" style="margin: 0 0 0 0px;float: right;" onclick="onNextSaveTab4()">Next</button>
                     </div>
                 </div>
 
@@ -275,7 +275,7 @@
                         <div class="field-group">
                             <div class="form-group sm-field select-field mr-2">
                                 <label for="method">Method</label>
-                                <select name="method" asp-for="Input.MethodName" id="method" class="form-control" onchange="onmethod();">
+                                <select name="method5" id="method5" class="form-control" onchange="onmethod();">
                                     <option value="Get">GET</option>
                                     <option value="Post">POST</option>
                                     <option value="Put">PUT</option>
@@ -286,10 +286,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="urlbox">Rest API Endpoint</label>
-                                <input class="form-control" asp-for="Input.RequestUrl" id="urlbox" name="url" type="text" placeholder="Enter your Rest API/URL" required="" autocorrect="off" autocapitalize="none">
+                                <input class="form-control" id="urlbox5" name="url5" type="text" placeholder="Enter your Rest API/URL" required="" autocorrect="off" autocapitalize="none">
                             </div>
                             <div class="form-group">
-                                <button id="testBtn" type="submit" class=" fill-btn " style="margin: 0 0 0 18px;">Test</button>
+                                <button id="testBtn5" type="submit" class=" fill-btn " style="margin: 0 0 0 18px;" onclick="getAPIResponse('method5','urlbox5','requestbody5','responsebody5')">Test</button>
                             </div>
                         </div>
 
@@ -298,7 +298,7 @@
                                 <label>Post Data</label>
                                 <!-- Type Selection -->
                                 <div class="d-flex justify-content-between justify-content-sm-start align-items-center flex-wrap">
-                                    <div id="bodyTypes" class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <div id="bodyTypes5" class="btn-group btn-group-toggle" data-toggle="buttons">
                                         <label class="btn btn-light btn-sm"> <input type="radio" name="bodytype" id="form1" value="F">form-data</label>
                                         <label class="btn btn-light btn-sm ml-0 border-left active"> <input type="radio" name="bodytype" id="raw" value="R" checked="">raw</label>
                                     </div>
@@ -308,14 +308,14 @@
                                         <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="bodytype" id="json" value="J"><label class="form-check-label" for="json">JSON</label> </div>
                                     </div>
                                 </div>
-                                <textarea class="form-control mt-2" asp-for="Input.RequestBody" id="requestbody" name="requestbody" placeholder="Send data to website via POST method, one per line. Eg.j_username=joe" rows="3"></textarea>
+                                <textarea class="form-control mt-2" id="requestbody5" name="requestbody5" placeholder="Send data to website via POST method, one per line. Eg.j_username=joe" rows="3"></textarea>
                             </div>
                         </div>
 
-                        <div class="field-group w-100" id="ResponseDiv" style="display: block;">
+                        <div class="field-group w-100" id="ResponseDiv5" style="display: block;">
                             <div class="form-group">
                                 <label>Response Data</label>
-                                <textarea class="form-control mt-2" asp-for="Input.ResponseBody" id="responsebody" name="responsebody" placeholder="Enter the URL and click Send to get a response" rows="5" readonly></textarea>
+                                <textarea class="form-control mt-2" id="responsebody5" name="responsebody5" placeholder="Enter the URL and click Send to get a response" rows="5" readonly></textarea>
                             </div>
                         </div>
                     </div>
@@ -352,35 +352,35 @@
 
                     <div class="form-group">
                         <button id="btnPreviousTab4" type="button" class="fill-btn" style="margin: 0 0 0 0px;float: left;" onclick="onPreviousClick(5)">Previous</button>
-                        <button id="btnSave" type="submit" class=" fill-btn" style="margin: 0 0 0 18px;float: right;" formaction="/APIRequest/OnPostSaveProcess">Save Process</button>
+                        <button id="btnSave" type="submit" class=" fill-btn" style="margin: 0 0 0 18px;float: right;" onclick="onNextSaveTab5()">Save Process</button>
                     </div>
+
+                    @*<div class="multi-fields">
+                    <div class="field-group mr-0 active" id="custheader" style="display: block;">
+                    <div id="dummy" class="field-wrap dummy">
+                    <div class="field-wrap flex-nowrap custom-header-field">
+                    <div class="form-group mr-2"><input class="form-control" type="text" placeholder="Name" name="headername" required="" autocorrect="off" autocapitalize="none"></div>
+                    <div class="form-group"><input class="form-control" type="text" placeholder="Value" name="headervalue" required="" autocorrect="off" autocapitalize="none"></div>
+                    <div class=" btn-wrapper ml-2 btn-wrap-width">
+                    <div class=" d-flex align-items-center justify-content-start">
+                    <button type="button" class="btn rounded-0 ml-0 mr-0" onclick="addcustomheaders();">
+                    <span class="sr-only">Add Header</span>
+                    <i class="icon-add align-middle"></i>
+                    </button>
+                    <button type="button" class="line-btn ml-2 mr-0" onclick="removecustomheader(this);" style="display:block">
+                    <span class="sr-only">Remove Header</span>
+                    <i class="icon-delete align-middle"></i>
+                    </button>
+                    </div>
+                    </div>
+                    </div>
+                    <div id="inner-fields" class="field-wrap dummy d-flex"></div>
+                    </div>
+                    </div>
+                    </div>*@
                 </div>
             </div>
         </div>
-
-        @*<div class="multi-fields">
-        <div class="field-group mr-0 active" id="custheader" style="display: block;">
-        <div id="dummy" class="field-wrap dummy">
-        <div class="field-wrap flex-nowrap custom-header-field">
-        <div class="form-group mr-2"><input class="form-control" type="text" placeholder="Name" name="headername" required="" autocorrect="off" autocapitalize="none"></div>
-        <div class="form-group"><input class="form-control" type="text" placeholder="Value" name="headervalue" required="" autocorrect="off" autocapitalize="none"></div>
-        <div class=" btn-wrapper ml-2 btn-wrap-width">
-        <div class=" d-flex align-items-center justify-content-start">
-        <button type="button" class="btn rounded-0 ml-0 mr-0" onclick="addcustomheaders();">
-        <span class="sr-only">Add Header</span>
-        <i class="icon-add align-middle"></i>
-        </button>
-        <button type="button" class="line-btn ml-2 mr-0" onclick="removecustomheader(this);" style="display:block">
-        <span class="sr-only">Remove Header</span>
-        <i class="icon-delete align-middle"></i>
-        </button>
-        </div>
-        </div>
-        </div>
-        <div id="inner-fields" class="field-wrap dummy d-flex"></div>
-        </div>
-        </div>
-        </div>*@
     </form>
 
 </div>
@@ -408,7 +408,6 @@
             }
 
             $("#btnSave").click(function () {
-                console.log("onSaveProcess");
                 let processType = document.getElementById("processType").value;
                 let processName = document.getElementById("processName").value;
                 let syncTimer = document.getElementById("syncTimer").value;
@@ -453,8 +452,182 @@
             }
         }
 
+        function onNextSaveTab1() {
+            let processType = document.getElementById("processType").value;
+            let processName = document.getElementById("processName").value;
+            let syncTimer = document.getElementById("syncTimer").value;
+
+            var requestData = {
+                ProcessType: processType,
+                ProcessName: processName,
+                SyncTimer: syncTimer
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "?handler=CreateProcessSetting",
+                data: JSON.stringify(requestData),
+                headers:
+                {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    // handle the response from the server
+                    alert("Success ! Saving process request succeed.");
+                },
+                error: function () {
+                    //alert("An error occurred while processing the request.");
+                }
+            });
+
+            onNextClick(1);
+        }
+
+        function onNextSaveTab2() {
+            let requestMethodType = document.getElementById("method").value;
+            let requestURL = document.getElementById("urlbox").value;
+            let requestBody = document.getElementById("requestbody").value;
+            let responseBody = document.getElementById("responsebody").value;
+
+            var requestData = {
+                RequestMethodType: requestMethodType,
+                RequestURL: requestURL,
+                RequestBody: requestBody,
+                ResponseBody: responseBody
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "?handler=CreateSourceLoginAPI",
+                data: JSON.stringify(requestData),
+                headers:
+                {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    // handle the response from the server
+                    alert("Success ! Saving process request succeed.");
+                },
+                error: function () {
+                    //alert("An error occurred while processing the request.");
+                }
+            });
+
+            onNextClick(2);
+        }
+
+        function onNextSaveTab3() {
+            let requestMethodType = document.getElementById("method3").value;
+            let requestURL = document.getElementById("urlbox3").value;
+            let requestBody = document.getElementById("requestbody3").value;
+            let responseBody = document.getElementById("responsebody3").value;
+
+            var requestData = {
+                RequestMethodType: requestMethodType,
+                RequestURL: requestURL,
+                RequestBody: requestBody,
+                ResponseBody: responseBody
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "?handler=CreateSourceDataAPI",
+                data: JSON.stringify(requestData),
+                headers:
+                {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    // handle the response from the server
+                    alert("Success ! Saving process request succeed.");
+                },
+                error: function () {
+                    //alert("An error occurred while processing the request.");
+                }
+            });
+
+            onNextClick(3);
+        }
+
+        function onNextSaveTab4() {
+            let requestMethodType = document.getElementById("method4").value;
+            let requestURL = document.getElementById("urlbox4").value;
+            let requestBody = document.getElementById("requestbody4").value;
+            let responseBody = document.getElementById("responsebody4").value;
+
+            var requestData = {
+                RequestMethodType: requestMethodType,
+                RequestURL: requestURL,
+                RequestBody: requestBody,
+                ResponseBody: responseBody
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "?handler=CreateDestinationLoginAPI",
+                data: JSON.stringify(requestData),
+                headers:
+                {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    // handle the response from the server
+                    alert("Success ! Saving process request succeed.");
+                },
+                error: function () {
+                    //alert("An error occurred while processing the request.");
+                }
+            });
+
+            onNextClick(4);
+        }
+
+        function onNextSaveTab5() {
+            let requestMethodType = document.getElementById("method5").value;
+            let requestURL = document.getElementById("urlbox5").value;
+            let requestBody = document.getElementById("requestbody5").value;
+            let responseBody = document.getElementById("responsebody5").value;
+            let sourceField = document.getElementById("sourceField").value;
+            let destinationField = document.getElementById("destinationField").value;
+
+            var requestData = {
+                RequestMethodType: requestMethodType,
+                RequestURL: requestURL,
+                RequestBody: requestBody,
+                ResponseBody: responseBody
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "?handler=CreateDestinationDataAPI",
+                data: JSON.stringify(requestData),
+                headers:
+                {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    // handle the response from the server
+                    alert("Success ! Saving process request succeed.");
+                },
+                error: function () {
+                    //alert("An error occurred while processing the request.");
+                }
+            });
+
+            onNextClick(4);
+        }
+
         function onNextClick(tabNumber) {
-            debugger;
             if (tabNumber > 4)
                 return false;
 
@@ -483,6 +656,45 @@
             $(nextTabId).addClass("show active");
             $(nextTabLinkId).addClass("active");
         }
+
+        function getAPIResponse(methodId, urlboxId, requestbodyId, responsebodyId) {
+            debugger;
+            const requestMethodType = document.getElementById(methodId).value;
+            const requestURL = document.getElementById(urlboxId).value;
+            const requestBody = document.getElementById(requestbodyId).value;
+
+            if (requestMethodType.toUpperCase() === "GET") {
+                $.ajax({
+                    url: requestURL,
+                    method: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        document.getElementById(responsebodyId).value = JSON.stringify(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + textStatus + " - " + errorThrown);
+                    }
+                });
+            }
+            else {
+                $.ajax({
+                    url: requestURL,
+                    method: "POST",
+                    data: JSON.stringify(requestBody),
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        document.getElementById(responsebodyId).value = JSON.stringify(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + textStatus + " - " + errorThrown);
+                    }
+                });
+
+            }
+        }
+
     </script>
     <partial name="_ValidationScriptsPartial" />
 }

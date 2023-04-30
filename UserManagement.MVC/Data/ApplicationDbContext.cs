@@ -59,8 +59,38 @@ namespace UserManagement.MVC.Data
             {
                 entity.ToTable(name: "SaveProcess").HasKey(e => e.Id);
             });
+
+            builder.Entity<SourceLoginAPIModel>(entity =>
+            {
+                entity.ToTable(name: "SourceLoginAPIModel").HasKey(e => e.Id);
+            });
+
+            builder.Entity<SourceDataAPIModel>(entity =>
+            {
+                entity.ToTable(name: "SourceDataAPIModel").HasKey(e => e.Id);
+            });
+
+            builder.Entity<DestinationLoginAPIModel>(entity =>
+            {
+                entity.ToTable(name: "DestinationLoginAPIModel").HasKey(e => e.Id);
+            });
+
+            builder.Entity<DestinationDataAPIModel>(entity =>
+            {
+                entity.ToTable(name: "DestinationDataAPIModel").HasKey(e => e.Id);
+            });
+            
+            builder.Entity<SaveProceeSettingDetailModel>(entity =>
+            {
+                entity.ToTable(name: "SaveProceeSettingDetailModel").HasKey(e => e.Id);
+            });
         }
 
         public DbSet<SaveProcess> SaveProcesses { get; set; }
+        public DbSet<SourceLoginAPIModel> SourceLoginAPIModels { get; set;}
+        public DbSet<SourceDataAPIModel> SourceDataAPIModels { get; set;}
+        public DbSet<DestinationLoginAPIModel> DestinationLoginAPIModels { get; set;}
+        public DbSet<DestinationDataAPIModel> DestinationDataAPIModels { get; set;}
+        public DbSet<SaveProceeSettingDetailModel> SaveProceeSettingDetailModels { get; set;}
     }
 }
